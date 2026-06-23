@@ -42,7 +42,7 @@ const state = {
   gitSha,
   maximumFileUploadSize: resolveMaximumFileUploadSize(maximumFileUploadSize),
   hCaptchaSiteKey,
-  installationName,
+  installationName: installationName || 'MOTHERXIP Inbox',
   logo,
   logoDark,
   logoThumbnail,
