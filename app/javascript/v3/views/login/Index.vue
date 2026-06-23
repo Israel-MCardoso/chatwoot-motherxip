@@ -290,33 +290,40 @@ export default {
 
 <template>
   <main
-    class="flex flex-col w-full min-h-screen py-20 bg-n-brand/5 dark:bg-n-background sm:px-6 lg:px-8"
+    class="relative flex flex-col w-full min-h-screen py-20 bg-slate-950 text-slate-100 sm:px-6 lg:px-8 overflow-hidden"
   >
-    <section class="max-w-5xl mx-auto">
-      <img
-        :src="globalConfig.logo"
-        :alt="globalConfig.installationName"
-        class="block w-auto h-8 mx-auto dark:hidden"
-      />
+    <!-- MOTHERXIP OS Radial Glow Backgrounds -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute -top-[30%] left-[50%] -translate-x-[50%] w-[600px] h-[600px] rounded-full bg-purple-600/10 blur-[130px]"></div>
+      <div class="absolute bottom-[-20%] left-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-600/5 blur-[100px]"></div>
+    </div>
+
+    <section class="max-w-5xl mx-auto relative z-10">
       <img
         v-if="globalConfig.logoDark"
         :src="globalConfig.logoDark"
         :alt="globalConfig.installationName"
-        class="hidden w-auto h-8 mx-auto dark:block"
+        class="w-auto h-8 mx-auto"
       />
-      <h2 class="mt-6 text-3xl font-medium text-center text-n-slate-12">
+      <img
+        v-else
+        :src="globalConfig.logo"
+        :alt="globalConfig.installationName"
+        class="w-auto h-8 mx-auto"
+      />
+      <h2 class="mt-6 text-3xl font-semibold text-center text-white">
         {{ replaceInstallationName($t('LOGIN.TITLE')) }}
       </h2>
-      <p v-if="showSignupLink" class="mt-3 text-sm text-center text-n-slate-11">
+      <p v-if="showSignupLink" class="mt-3 text-sm text-center text-slate-400">
         {{ $t('COMMON.OR') }}
-        <router-link to="auth/signup" class="lowercase text-link text-n-brand">
+        <router-link to="auth/signup" class="lowercase text-purple-400 hover:text-purple-300 font-medium transition-colors">
           {{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}
         </router-link>
       </p>
     </section>
 
     <!-- Session Limit Section -->
-    <section v-if="sessionsLimitReached" class="mt-11">
+    <section v-if="sessionsLimitReached" class="mt-11 relative z-10">
       <SessionLimitOverlay
         :sessions="limitedSessions"
         @revoke="handleSessionRevoke"
@@ -326,7 +333,7 @@ export default {
     </section>
 
     <!-- MFA Verification Section -->
-    <section v-else-if="mfaRequired" class="mt-11">
+    <section v-else-if="mfaRequired" class="mt-11 relative z-10">
       <MfaVerification
         :mfa-token="mfaToken"
         @verified="handleMfaVerified"
@@ -337,7 +344,7 @@ export default {
     <!-- Regular Login Section -->
     <section
       v-else
-      class="bg-white shadow sm:mx-auto mt-11 sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+      class="bg-slate-900 border border-slate-800 shadow-2xl sm:mx-auto mt-11 sm:w-full sm:max-w-lg p-11 sm:rounded-xl relative z-10"
       :class="{
         'mb-8 mt-15': !showGoogleOAuth,
         'animate-wiggle': loginApi.hasErrored,
@@ -349,13 +356,13 @@ export default {
           <div v-if="showSamlLogin" class="text-center">
             <router-link
               to="/app/login/sso"
-              class="inline-flex justify-center w-full px-4 py-3 items-center bg-n-background dark:bg-n-solid-3 rounded-md shadow-sm ring-1 ring-inset ring-n-container dark:ring-n-container focus:outline-offset-0 hover:bg-n-alpha-2 dark:hover:bg-n-alpha-2"
+              class="inline-flex justify-center w-full px-4 py-3 items-center bg-slate-950 hover:bg-slate-900 border border-slate-800 rounded-md shadow-sm transition-colors focus:outline-offset-0"
             >
               <Icon
                 icon="i-lucide-lock-keyhole"
-                class="size-5 text-n-slate-11"
+                class="size-5 text-slate-400"
               />
-              <span class="ml-2 text-base font-medium text-n-slate-12">
+              <span class="ml-2 text-base font-medium text-slate-300">
                 {{ $t('LOGIN.SAML.LABEL') }}
               </span>
             </router-link>
@@ -363,7 +370,7 @@ export default {
           <SimpleDivider
             v-if="showGoogleOAuth || showSamlLogin"
             :label="$t('COMMON.OR')"
-            class="uppercase"
+            class="uppercase text-slate-500"
           />
         </div>
         <form class="space-y-5" @submit.prevent="submitFormLogin">
@@ -394,7 +401,7 @@ export default {
             <p v-if="!globalConfig.disableUserProfileUpdate">
               <router-link
                 to="auth/reset/password"
-                class="text-sm text-link"
+                class="text-sm text-purple-400 hover:text-purple-300 font-medium transition-colors"
                 tabindex="4"
               >
                 {{ $t('LOGIN.FORGOT_PASSWORD') }}
